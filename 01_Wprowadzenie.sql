@@ -48,3 +48,24 @@ WHERE SALARY_ADD * 12 > SALARY_BASE * 2;
 -- 11. Wyszukaj wszystkich pracowników, których id jest większe niż 150
 SELECT * FROM USERS
 WHERE ID_USER > 150;
+
+-- ZADANIA DODATKOWE
+-- 12. Sprawdź w jakich nazwiskach przedostatnia litera to litera E
+SELECT * FROM USERS
+WHERE LASTNAME LIKE "%E_";
+
+-- 13 Możemy policzyć wystąpienia rekordów za pomocą polecenia COUNT().  Liczbę wszystkich stanowisk oraz stanowiska bez powtórzeń policzymy za pomocą:
+SELECT COUNT(position) FROM USERS;
+SELECT COUNT(DISTINCT position) FROM USERS;
+
+-- Sprawdź w ilu nazwiskach ostatnia litera to N
+SELECT COUNT(LASTNAME) FROM USERS
+WHERE LASTNAME LIKE "%N";
+
+-- 14. Znajdź pracowników, których nazwisko zawiera w środku literę r (nie na końcu, nie na początku).
+SELECT * FROM USERS
+WHERE LASTNAME LIKE "%R%";
+
+-- 15. Znajdź pracowników o pensji wyższej lub równej 650 a niższej niż 1100.
+SELECT * FROM USERS
+WHERE SALARY_BASE BETWEEN 650 AND 1100;
