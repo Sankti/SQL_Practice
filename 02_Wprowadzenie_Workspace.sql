@@ -13,22 +13,22 @@ WHERE SALARY_BASE BETWEEN 300 AND 800;
 -- 3. Wyświetl dane (nazwisko, id szefa i podstawową wypłatę) o tych pracownikach, którzy zarabiają powyżej 1000 i posiadają szefa
 
 SELECT
-	LASTNAME,
+    LASTNAME,
     ID_BOSS,
     SALARY_BASE
 FROM COMPANY_DB.USERS
 WHERE
-	SALARY_BASE > 1000
+    SALARY_BASE > 1000
     AND ID_BOSS IS NOT NULL;
 
 -- 4. Wyświetl nazwiska i id zespołów użytkowników zatrudnionych w zespole nr 20, których nazwisko zaczyna się na "K" lub kończy na "ES" lub "NS".
 
 SELECT
-	LASTNAME,
-	ID_TEAM
+    LASTNAME,
+    ID_TEAM
 FROM COMPANY_DB.USERS
 WHERE ID_TEAM = 20
-	AND (LASTNAME LIKE "K%"
+    AND (LASTNAME LIKE "K%"
     OR LASTNAME LIKE "%ES" OR LASTNAME LIKE "%NS");
 
 -- 5. Wyświetl nazwisko, stanowisko i stawkę godz. tych pracowników, którzy nie są ani regularami, ani juniorami ani stażystami i którzy nie zarabiają w przedziale od 400 do 800. Wyniki uszereguj według stawek godzinowych pracowników (przyjmij 20-dniowy miesiąc pracy i 8- godzinny dzień pracy).
@@ -41,13 +41,13 @@ WHERE ID_TEAM = 20
 --THOMAS	LEADER	10.812500
 
 SELECT
-	LASTNAME,
+    LASTNAME,
     POSITION,
     SALARY_BASE * 12 / (12 * 20 * 8) AS "HOURLY RATE"
 FROM COMPANY_DB.USERS
 WHERE
-	POSITION NOT IN ("REGULAR", "JUNIOR", "INTERN")
-	AND SALARY_BASE NOT BETWEEN 400 AND 800
+    POSITION NOT IN ("REGULAR", "JUNIOR", "INTERN")
+    AND SALARY_BASE NOT BETWEEN 400 AND 800
 ORDER BY SALARY_BASE * 12 / (20 * 8) ASC;
 
 -- 6. Wyświetl poniższe informacje o użytkownikach, dla których suma płacy podstawowej i bonusu jest wyższa niż 1000. Wyniki uporządkuj według nazw stanowisk odwrotnie alfabetycznie. Jeżeli dwóch pracowników ma to samo stanowisko, to posortuj ich według nazwisk.
@@ -58,9 +58,9 @@ ORDER BY SALARY_BASE * 12 / (20 * 8) ASC;
 --THOMAS	LEADER	1730.00	420.50
 
 SELECT
-	LASTNAME,
-	POSITION,
-	SALARY_BASE,
+    LASTNAME,
+    POSITION,
+    SALARY_BASE,
     SALARY_ADD
 FROM COMPANY_DB.USERS
 WHERE SALARY_BASE + IFNULL(SALARY_ADD, 0) > 1000
@@ -74,13 +74,13 @@ ORDER BY POSITION DESC, LASTNAME ASC;
 --MEVANS WORKS FROM 2005-09-15 AND EARNS 935.00
 
 SELECT
-	CONCAT(
-		LASTNAME,
-		" WORKS FROM ",
+    CONCAT(
+        LASTNAME,
+        " WORKS FROM ",
         HIRED_AT,
         " AND EARNS ",
         SALARY_BASE + IFNULL(SALARY_ADD, 0))
-	AS "SENIORS"
+    AS "SENIORS"
 FROM COMPANY_DB.USERS
 WHERE POSITION = "SENIOR"
 ORDER BY SALARY_BASE DESC;
