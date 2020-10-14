@@ -43,12 +43,12 @@ WHERE ID_TEAM = 20
 SELECT
     LASTNAME,
     POSITION,
-    SALARY_BASE * 12 / (12 * 20 * 8) AS "HOURLY RATE"
+    SALARY_BASE / (20 * 8) AS "HOURLY RATE"
 FROM COMPANY_DB.USERS
 WHERE
     POSITION NOT IN ("REGULAR", "JUNIOR", "INTERN")
     AND SALARY_BASE NOT BETWEEN 400 AND 800
-ORDER BY SALARY_BASE * 12 / (20 * 8) ASC;
+ORDER BY "HOURLY RATE";
 
 -- 6. Wyświetl poniższe informacje o użytkownikach, dla których suma płacy podstawowej i bonusu jest wyższa niż 1000. Wyniki uporządkuj według nazw stanowisk odwrotnie alfabetycznie. Jeżeli dwóch pracowników ma to samo stanowisko, to posortuj ich według nazwisk.
 --Oczekiwany wynik:
