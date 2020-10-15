@@ -1,3 +1,28 @@
+-- Wyświetl nazwiska i wypłaty pracowników powiększone o 7% i zaokrąglone do liczb całkowitych jako SALARY_BUMP.
+SELECT
+	LASTNAME,
+    ROUND(SALARY_BASE * 1.07, 0) AS SALARY_BUMP
+FROM USERS;
+
+-- Pozbądź się liter Y i Z z imion pracowników. Zamień je na znak #.
+SELECT
+	REPLACE(REPLACE(LASTNAME, 'Y', '#'), 'Z', '#') AS NEW_LASTNAME
+FROM USERS;
+
+-- Wyświetl imię, nazwisko i stanowisko pracowników, którzy posiadają literę E w pierwszej połowie swojego stanowiska oraz pracują w firmie od 2015.
+SELECT lastname, firstname, position
+FROM USERS
+WHERE INSTR(position, 'E') BETWEEN 1 AND LENGTH(position) / 2
+AND YEAR(HIRED_AT) = 2015;
+
+-- Sprawdź, jaki mamy dziś dzień tygodnia. Wynik powinien wyglądać następująco:
+-- TODAY IS
+-- ------------
+-- Thursday
+SELECT DAYNAME(SYSDATE()) AS "TODAY IS";
+
+
+
 -- ZADANIA Z ZAJĘĆ
 -- 1. Wyświetl informacje o datach zatrudnienia czlonkow zespolu 20. Wyswietl w kolejnosci wg. daty.
 SELECT
