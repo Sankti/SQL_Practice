@@ -80,7 +80,7 @@ FROM USERS;
 SELECT
 	LASTNAME,
 	SALARY_BASE * 0.2 AS DEPOSIT,
-	((((((((((SALARY_BASE * 0.2) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) AS "INTEREST AFTER 10 YEARS"
+	((((((((((SALARY_BASE * 0.2) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) - SALARY_BASE * 0.2 AS "INTEREST AFTER 10 YEARS"
 FROM USERS;
 
 
