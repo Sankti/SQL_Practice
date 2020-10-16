@@ -19,30 +19,70 @@ FROM USERS
 WHERE INSTR(LASTNAME, 'L') BETWEEN LENGTH(LASTNAME) / 2 AND LENGTH(LASTNAME);
 
 -- 4. Nadaj podwyżki pracownikom - powiększ ich pensje podstawową o 15% i zaokrąglij do liczb całkowitych. Wyświetl: imię, nazwisko, stara podstawa, nowa podstawa wynagrodzenia.
-
+SELECT
+	FIRSTNAME,
+	LASTNAME,
+	SALARY_BASE,
+	ROUND(SALARY_BASE * 1.15) AS SALARY_NEW
+FROM USERS;
 
 -- 5. Policz jaki staż będzie miał każdy pracownik 1 stycznia 2021 wyświetl w dniach oraz w latach.
-
+SELECT
+	LASTNAME,
+	HIRED_AT,
+	TIMESTAMPDIFF(DAY, HIRED_AT, '2021-01-01') AS "YEARS OF SERVICE ON 2021-01-01 IN DAYS",
+	TIMESTAMPDIFF(YEAR, HIRED_AT, '2021-01-01') AS "YEARS OF SERVICE ON 2021-01-01 IN YEARS"
+FROM USERS;
 
 -- 6. Wyświetl nazwisko oraz datę zatrudnienia pracownika zespołu 20 w zmienionym formacie: zamiast rok - miesiąc - dzień wyświetl: miesiąc słownie | dzień / rok
-
+SELECT
+	LASTNAME,
+	CONCAT(
+		MONTHNAME(HIRED_AT),
+		" | ",
+		DAY(HIRED_AT),
+		" / ",
+		YEAR(HIRED_AT)
+	) AS "DATE OF HIRING"
+FROM USERS
+WHERE ID_TEAM = 20;
 
 -- 7. Sprawdź, jaki mamy dziś dzień tygodnia. Wyświetl nazwę dnia.
 SELECT DAYNAME(SYSDATE()) AS "TODAY IS";
 
 -- 8. Korzystając z wyrażenia CASE zmień adresy zespołów tak by wyświetlać stan zamiast miasta,
-
+SELECT
+	NAME,
+	ADDRESS,
+	CASE
+		WHEN ADDRESS = "NEW YORK CITY" THEN "NEW YORK"
+		WHEN ADDRESS = "HOUSTON" THEN "TEXAS"
+		WHEN
+			ADDRESS = "SAN DIEGO"
+			OR
+			ADDRESS = "LOS ANGELES" THEN "CALIFORNIA"
+	END AS STATE
+FROM TEAMS;
 
 -- 9. Dla każdego pracownika wyświetl informację o tym, czy jego pensja jest mniejsza niż, równa lub większa niż 480
 -- name | salary_base | limit
 -- smith |               450 | less than 480
-
-
+SELECT
+	LASTNAME AS NAME,
+	SALARY_BASE,
+	CASE
+		WHEN SALARY_BASE > 480 THEN "MORE THAN 480"
+		WHEN SALARY_BASE = 480 THEN "EXACTLY 480"
+		WHEN SALARY_BASE < 480 THEN "LESS THAN 480"
+	END AS "LIMIT"
+FROM USERS;
 
 -- * Każdy pracownik odłożył 20% swoich miesięcznych zarobków na 10-letnią lokatę oprocentowaną 10% w skali roku i kapitalizowaną co roku. Wyświetl informację o tym, jaki zysk będzie miał każdy pracownik po zamknięciu lokaty.
-
-
-
+SELECT
+	LASTNAME,
+	SALARY_BASE * 0.2 AS DEPOSIT,
+	((((((((((SALARY_BASE * 0.2) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) * 1.1) AS "INTEREST AFTER 10 YEARS"
+FROM USERS;
 
 
 
