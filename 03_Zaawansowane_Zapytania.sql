@@ -5,12 +5,11 @@ SELECT
 	CONCAT(
 		SUBSTR(POSITION, 1, 2),
 		ID_USER
-		) AS USER_CODE
+	) AS USER_CODE
 FROM USERS;
 
 -- 2. Z nazwisk pracowników pozbądź się liter K i L - zamień je na X.
-SELECT
-	REPLACE(REPLACE(LASTNAME, 'K', 'X'), 'L', 'X') AS NEW_LASTNAME
+SELECT REPLACE(REPLACE(LASTNAME, 'K', 'X'), 'L', 'X') AS NEW_LASTNAME
 FROM USERS;
 
 -- 3. Wyświetl tylko tych pracowników, którzy mają literę L w drugiej połowie nazwiska.
