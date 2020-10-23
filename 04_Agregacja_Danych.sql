@@ -18,8 +18,21 @@ HAVING USER_COUNT > 1;
 -- (W tabelkach znajdują się przykładowe dane pokazujące efekt - ilustracja rozwiązania, nie rozwiązanie :) )
 
 --     Korzystając z wyrażenia CASE zmień adresy zespołów tak by wyświetlać stan USA zamiast miasta,
---     Dla każdego pracownika wyświetl informację o tym, czy jego pensja jest mniejsza niż, równa lub większa niż 480 np. wzoru:
+SELECT
+	NAME,
+	CASE
+		WHEN ADDRESS = "NEW YORK CITY" THEN "NEW YORK"
+		WHEN ADDRESS = "HOUSTON" THEN "TEXAS"
+		WHEN
+			ADDRESS = "SAN DIEGO"
+			OR
+			ADDRESS = "LOS ANGELES" THEN "CALIFORNIA"
+	END AS STATE
+FROM TEAMS;
 
+
+
+--     Dla każdego pracownika wyświetl informację o tym, czy jego pensja jest mniejsza niż, równa lub większa niż 480 np. wzoru:
 --     ________________________________
 --     | name | salary_base | limit
 --     ---------- ------------------ ------------------------  
@@ -27,10 +40,56 @@ HAVING USER_COUNT > 1;
 --     | aimet |               480 | equal 480        
 --     | maya |               500 | more than 480
 --     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+SELECT
+	LASTNAME AS NAME,
+	SALARY_BASE,
+	CASE
+		WHEN SALARY_BASE > 480 THEN "MORE THAN 480"
+		WHEN SALARY_BASE = 480 THEN "EQUAL 480"
+		WHEN SALARY_BASE < 480 THEN "LESS THAN 480"
+	END AS "LIMIT"
+FROM USERS;
+
+
+
 --     Oblicz średnią pensję na stanowiskach w tej firmie. Wyniki uporządkuj wg malejącej średniej pensji.
+SELECT
+  POSITION,
+  AVG(SALARY_BASE) AS AVERAGE_SALARY
+FROM USERS
+GROUP BY POSITION
+ORDER BY AVERAGE_SALARY DESC;
+
+
+
+
 --     Wyświetl najniższą i najwyższą pensję w firmie. Wyświetl informację o różnicy dzielącej najlepiej i najgorzej zarabiających pracowników.
+SELECT
+  MAX(SALARY_BASE) AS MAXIMUM_SALARY,
+  MIN(SALARY_BASE) AS MINIMUM_SALARY,
+  MAX(SALARY_BASE) - MIN(SALARY_BASE) AS "Difference between max and min salary"
+FROM USERS;
+
+
+
 --     W ramach każdego zespołu dla każdego stanowiska występującego w zespole oblicz najwyższą wypłatę całkowitą.
+SELECT
+	ID_TEAM,
+	POSITION,
+    MAX(SALARY_BASE * 12 + IFNULL(SALARY_ADD, 0) * 12) AS "Maximum yearly wage"
+FROM USERS
+GROUP BY ID_TEAM, POSITION
+ORDER BY ID_TEAM;
+
+
+
 --     Wyświetl liczbę zatrudnionych na stanowisku SENIOR
+SELECT COUNT(*)
+FROM USERS
+WHERE POSITION = "SENIOR";
+
+
+
 --     Znajdź sumaryczne miesięczne płace dla każdego zespołu. Nie zapomnij o płacach dodatkowych.
 --     Zmodyfikuj zapytanie z zadania poprzedniego w taki sposób, aby jego wynikiem była sumaryczna miesięczna płaca w zespole, który wypłaca swoim pracownikom najwięcej pieniędzy.
 --     Dla każdego pracownika, który jest szefem, wyświetl pensję najgorzej zarabiającego podwładnego. Wyniki uporządkuj wg malejącej pensji.
