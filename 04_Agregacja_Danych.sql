@@ -1,19 +1,3 @@
-SELECT
-	ROUND(SALARY_BASE / 40) AS DAILY_WAGE,
-    COUNT(*) AS USER_COUNT
-FROM USERS
-WHERE SALARY_BASE BETWEEN 400 AND 900
-GROUP BY DAILY_WAGE
-ORDER BY USER_COUNT DESC, DAILY_WAGE DESC;
-
-SELECT
-	POSITION,
-  COUNT(*) AS USER_COUNT
-FROM USERS
-WHERE SALARY_ADD IS NOT NULL
-GROUP BY POSITION
-HAVING USER_COUNT > 1;
-
 -- Zadania domowe:
 -- (W tabelkach znajdują się przykładowe dane pokazujące efekt - ilustracja rozwiązania, nie rozwiązanie :) )
 
@@ -41,13 +25,13 @@ FROM TEAMS;
 --     | maya |               500 | more than 480
 --     ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 SELECT
-	LASTNAME AS NAME,
-	SALARY_BASE,
-	CASE
-		WHEN SALARY_BASE > 480 THEN "MORE THAN 480"
-		WHEN SALARY_BASE = 480 THEN "EQUAL 480"
-		WHEN SALARY_BASE < 480 THEN "LESS THAN 480"
-	END AS "LIMIT"
+  LASTNAME AS NAME,
+  SALARY_BASE,
+  CASE
+    WHEN SALARY_BASE > 480 THEN "MORE THAN 480"
+    WHEN SALARY_BASE = 480 THEN "EQUAL 480"
+    WHEN SALARY_BASE < 480 THEN "LESS THAN 480"
+  END AS "LIMIT"
 FROM USERS;
 
 
@@ -74,8 +58,8 @@ FROM USERS;
 
 --     W ramach każdego zespołu dla każdego stanowiska występującego w zespole oblicz najwyższą wypłatę całkowitą.
 SELECT
-	ID_TEAM,
-	POSITION,
+  ID_TEAM,
+  POSITION,
     MAX(SALARY_BASE * 12 + IFNULL(SALARY_ADD, 0) * 12) AS "Maximum yearly wage"
 FROM USERS
 GROUP BY ID_TEAM, POSITION
@@ -91,15 +75,62 @@ WHERE POSITION = "SENIOR";
 
 
 --     Znajdź sumaryczne miesięczne płace dla każdego zespołu. Nie zapomnij o płacach dodatkowych.
+SELECT
+  ID_TEAM,
+    SUM(SALARY_BASE + IFNULL(SALARY_ADD, 0))
+FROM USERS
+GROUP BY ID_TEAM;
+
+
+
 --     Zmodyfikuj zapytanie z zadania poprzedniego w taki sposób, aby jego wynikiem była sumaryczna miesięczna płaca w zespole, który wypłaca swoim pracownikom najwięcej pieniędzy.
+SELECT
+  ID_TEAM,
+    SUM(SALARY_BASE + IFNULL(SALARY_ADD, 0)) AS MONTHLY_HR
+FROM USERS
+GROUP BY ID_TEAM
+ORDER BY MONTHLY_HR DESC
+LIMIT 1;
+
+
+
 --     Dla każdego pracownika, który jest szefem, wyświetl pensję najgorzej zarabiającego podwładnego. Wyniki uporządkuj wg malejącej pensji.
+
+
+
+
 --     Wyświetl numery zespołów wraz z liczbą pracowników w każdym zespole. Wyniki uporządkuj wg malejącej liczby pracowników
+SELECT
+  ID_TEAM,
+  COUNT(*)
+FROM USERS
+GROUP BY ID_TEAM
+ORDER BY COUNT(*) DESC;
+
+
+
 --     Zmodyfikuj zapytanie z zadania poprzedniego, aby wyświetlić numery tylko tych zespołów, które zatrudniają więcej niż 3 pracowników.
+SELECT
+  ID_TEAM,
+    COUNT(*) AS EMPLOYEES
+FROM USERS
+GROUP BY ID_TEAM
+HAVING COUNT(*) > 3
+ORDER BY EMPLOYEES DESC;
+
+
+
 --     Sprawdź, czy id pracowników są unikalne. Wyświetl zdublowane wartości identyfikatorów.
 --      (nie wybrano żadnych wierszy)
+SELECT
+  ID_USER
+FROM USERS
+GROUP BY ID_USER
+HAVING COUNT(*) > 1;
+
+
 
 --     Wyświetl średnie pensje wypłacane w ramach poszczególnych stanowisk i liczbę zatrudnionych na danym stanowisku. Pomiń pracowników zatrudnionych w 2020 roku.
-
 --       YEAR  | EMPLOYEES
 --     -----------  -------------------
 --        2012   |                     2 
@@ -107,8 +138,19 @@ WHERE POSITION = "SENIOR";
 --        2014   |                     3 
 --        2016   |                     5 
 --        2018   |                     1 
+SELECT
+  POSITION,
+  AVG(SALARY_BASE) AS AVERAGE_SALARY
+FROM USERS
+WHERE YEAR(HIRED_AT) != 2020
+GROUP BY POSITION
+ORDER BY AVERAGE_SALARY DESC;
+
+
 
 --     Zbuduj zapytanie, które wyliczy, ilu pracowników w swoim nazwisku posiada chociaż jedną literę „a” lub „A”.
+
+
 
 
 --     Zbuduj zapytanie, które wyświetli średnie i maksymalne pensje na stanowiskach REGULAR i SENIOR w poszczególnych zespołach
