@@ -78,3 +78,51 @@ WHERE BABY_NAME LIKE "%JESS%";
 
 
 
+-- Zbadaj proporcje częstotliwości występowania przez wyliczenie udziału procentowego imienia w całym zbiorze danych.
+SELECT
+    @MAX_FREQUENCY := SUM(FREQUENCY) AS MAX_FREQUENCY
+FROM DOG_NAME_DATA
+WHERE DOG_NAME LIKE "%MAX%";
+
+SELECT
+	ROUND(@MAX_FREQUENCY) AS "Number of dogs named Max or similar",
+    SUM(FREQUENCY) AS "Total number of dogs",
+    ROUND(@MAX_FREQUENCY / SUM(FREQUENCY) * 100, 8) AS "Percentage of dogs named Max or similar"
+FROM DOG_NAME_DATA;
+-- Procent psów nazwanych Max i podobnie: 1.10779270
+
+SELECT
+    @JESS_FREQUENCY := SUM(FREQUENCY) AS JESS_FREQUENCY
+FROM DOG_NAME_DATA
+WHERE DOG_NAME LIKE "%JESS%";
+
+SELECT
+	ROUND(@JESS_FREQUENCY) AS "Number of dogs named Jess or similar",
+    SUM(FREQUENCY) AS "Total number of dogs",
+    ROUND(@JESS_FREQUENCY / SUM(FREQUENCY) * 100, 8) AS "Percentage of dogs named Jess or similar"
+FROM DOG_NAME_DATA;
+-- Procent psów nazwanych Jess i podobnie: 0.52437830
+
+SELECT
+    @MAX_FREQUENCY := SUM(FREQUENCY) AS MAX_FREQUENCY
+FROM BABY_NAME_DATA
+WHERE BABY_NAME LIKE "%MAX%";
+
+SELECT
+	ROUND(@MAX_FREQUENCY) AS "Number of babies named Max or similar",
+    SUM(FREQUENCY) AS "Total number of babies",
+    ROUND(@MAX_FREQUENCY / SUM(FREQUENCY) * 100, 8) AS "Percentage of babies named Max or similar"
+FROM BABY_NAME_DATA;
+-- Procent psów nazwanych Max i podobnie: 1.16572520
+
+SELECT
+    @JESS_FREQUENCY := SUM(FREQUENCY) AS JESS_FREQUENCY
+FROM BABY_NAME_DATA
+WHERE BABY_NAME LIKE "%JESS%";
+
+SELECT
+	ROUND(@JESS_FREQUENCY) AS "Number of babies named Jess or similar",
+    SUM(FREQUENCY) AS "Total number of babies",
+    ROUND(@JESS_FREQUENCY / SUM(FREQUENCY) * 100, 8) AS "Percentage of babies named Jess or similar"
+FROM BABY_NAME_DATA;
+-- Procent dzieci nazwanych Jess i podobnie: 0
