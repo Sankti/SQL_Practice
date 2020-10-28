@@ -83,8 +83,8 @@ WHERE POSITION = "SENIOR"
 
 -- 7. Wyświetl id zespołu wypłacającego miesięcznie swoim pracownikom najwięcej pieniędzy.
 SELECT
-	ID_TEAM,
-	SUM(SALARY_BASE + SALARY_ADD) AS HR_SPENDING
+    ID_TEAM,
+    SUM(SALARY_BASE + SALARY_ADD) AS HR_SPENDING
 FROM USERS
 GROUP BY ID_TEAM
 ORDER BY HR_SPENDING DESC
@@ -93,7 +93,67 @@ LIMIT 1;
 
 
 -- 8. Zmodyfikuj poprzednie zapytanie w taki sposób, aby zamiast numeru zespołu wyświetlona została jego nazwa.
+SELECT
+    NAME,
+    SUM(SALARY_BASE + SALARY_ADD) AS HR_SPENDING
+FROM USERS U
+INNER JOIN TEAMS T
+    ON T.ID_TEAM = U.ID_TEAM
+GROUP BY U.ID_TEAM
+ORDER BY HR_SPENDING DESC
+LIMIT 1;
+
+
+
 -- 9. Znajdź zespoły zatrudniające więcej pracowników niż zespół administracji. Wynik posortuj wg nazw zespołów.
+SELECT
+    U.ID_TEAM,
+    NAME,
+    COUNT(*) AS EMPLOYEE_COUNT
+FROM USERS U
+INNER JOIN TEAMS T
+    ON U.ID_TEAM = T.ID_TEAM
+GROUP BY U.ID_TEAM
+HAVING EMPLOYEE_COUNT > (
+    SELECT COUNT(*)
+    FROM USERS U
+    WHERE ID_TEAM = 10
+)
+ORDER BY NAME;
+
+
+
 -- 10. Znajdź stanowisko które jest najliczniej reprezentowane w zbiorze pracowników.
+SELECT
+    POSITION
+FROM USERS
+GROUP BY POSITION
+ORDER BY COUNT(*) DESC
+LIMIT 1;
+
+
+
 -- - 9* Uzupełnij wynik poprzedniego zapytania o listę nazwisk pracowników na znalezionych etatach 
+SELECT
+    POSITION,
+    GROUP_CONCAT(
+        LASTNAME
+        SEPARATOR ", "
+    ) AS EMPLOYEES
+FROM USERS
+GROUP BY POSITION
+ORDER BY COUNT(*) DESC
+LIMIT 1;
+
+
+
 -- 11. Znajdź parę: pracownik – szef, dla której różnica między płacą pracownika a płacą jego szefa jest najniższa.
+SELECT
+    BOSS.LASTNAME AS BOSS,
+    EMPLOYEE.LASTNAME AS EMPLOYEE,
+    MIN(
+        ABS(BOSS.SALARY_BASE - EMPLOYEE.SALARY_BASE)
+    ) AS PAY_GAP
+FROM USERS BOSS
+INNER JOIN USERS EMPLOYEE
+WHERE BOSS.ID_USER = EMPLOYEE.ID_BOSS;
