@@ -59,22 +59,39 @@ ORDER BY HIRED_AT;
 SELECT *
 FROM TEAMS
 WHERE ID_TEAM IN (
-	SELECT
-		T.ID_TEAM
-	FROM USERS U
-	RIGHT JOIN TEAMS T
-	ON U.ID_TEAM = T.ID_TEAM
-	WHERE LASTNAME IS NULL
+    SELECT
+        T.ID_TEAM
+    FROM USERS U
+    RIGHT JOIN TEAMS T
+    ON U.ID_TEAM = T.ID_TEAM
+    WHERE LASTNAME IS NULL
 );
 
 
 
 -- 6. Wyświetl nazwiska tych seniorów, którzy wśród swoich podwładnych nie mają żadnych stażystów.
-
+SELECT LASTNAME
+FROM USERS
+WHERE POSITION = "SENIOR"
+    AND ID_TEAM NOT IN (
+        SELECT ID_TEAM
+        FROM USERS
+        WHERE POSITION = "INTERN"
+    );
 
 
 
 -- 7. Wyświetl id zespołu wypłacającego miesięcznie swoim pracownikom najwięcej pieniędzy.
+SELECT
+	ID_TEAM,
+	SUM(SALARY_BASE + SALARY_ADD) AS HR_SPENDING
+FROM USERS
+GROUP BY ID_TEAM
+ORDER BY HR_SPENDING DESC
+LIMIT 1;
+
+
+
 -- 8. Zmodyfikuj poprzednie zapytanie w taki sposób, aby zamiast numeru zespołu wyświetlona została jego nazwa.
 -- 9. Znajdź zespoły zatrudniające więcej pracowników niż zespół administracji. Wynik posortuj wg nazw zespołów.
 -- 10. Znajdź stanowisko które jest najliczniej reprezentowane w zbiorze pracowników.
