@@ -70,6 +70,10 @@ WHERE ID_TEAM IN (
 
 
 -- 6. Wyświetl nazwiska tych seniorów, którzy wśród swoich podwładnych nie mają żadnych stażystów.
+
+
+
+
 -- 7. Wyświetl id zespołu wypłacającego miesięcznie swoim pracownikom najwięcej pieniędzy.
 -- 8. Zmodyfikuj poprzednie zapytanie w taki sposób, aby zamiast numeru zespołu wyświetlona została jego nazwa.
 -- 9. Znajdź zespoły zatrudniające więcej pracowników niż zespół administracji. Wynik posortuj wg nazw zespołów.
